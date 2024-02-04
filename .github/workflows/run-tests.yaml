@@ -1,0 +1,25 @@
+name: Run tests
+on:
+    push:
+        branches:
+          - main
+    pull_request:
+        branches:
+          - main
+    workflow_dispatch:
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+          - name: Setup build2
+            uses: build2/setup-build2-github-action@v2
+            with:
+              build2-version: staged
+          - name: Initialize build configuration
+            run: bdep init -C @gcc cc config.cxx=g++
+          - name: Build project
+            run: b
+          - name: Run tests
+            run: b -j 1 test
